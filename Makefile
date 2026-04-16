@@ -1,6 +1,18 @@
 
 APP_NAME := app
 
+
+start:
+	@.venv/bin/python manage.py runserver
+
+migrate:
+	@.venv/bin/python manage.py migrate
+
+
+
+
+
+
 dev:
 	@bash -lc '\
 	if docker ps --filter "name=app-app" --format "{{.Names}}" | grep -q "app-app"; then \
@@ -12,15 +24,9 @@ dev:
 	fi; \
 	exec docker compose -f docker-compose.yml --project-name $(APP_NAME) exec $(APP_NAME) bash'
 
-ps:
-	@docker ps -a
 
 clear:
-	@docker compose down && 
-
-
-ps-id:
-	@docker ps -aq
+	@docker compose down &&
 
 
 rm rm-all:
