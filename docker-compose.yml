@@ -4,9 +4,8 @@ services:
     build:
       context: .
       dockerfile: ./DockerFile
-    network_mode: host
-    user: "1000:1000"
-    
+    network_mode: host   
     working_dir: /app
     volumes:
       - .:/app
+
