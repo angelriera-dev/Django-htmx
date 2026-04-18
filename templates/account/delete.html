@@ -1,63 +1,40 @@
 {% extends "base.html" %}
 
-{% block title %}Delete Account - Django SaaS{% endblock %}
+{% block title %}Delete Account | SaaS Boilerplate{% endblock %}
 
 {% block content %}
-<div class="min-h-[60vh] flex items-center justify-center py-16 px-8">
-  <div class="w-full max-w-md space-y-8">
-    <div>
-      <h2 class="mt-6 text-center text-3xl font-medium tracking-tighter text-black">
-        DELETE ACCOUNT
-      </h2>
-      <p class="mt-2 text-center text-sm text-gray">
-        This action cannot be undone. Please be certain.
-      </p>
-    </div>
+<div class="flex min-h-[calc(100vh-5rem)] items-center justify-center px-4 py-10">
+  <div class="w-full max-w-md">
+    <div class="card border border-base-200 bg-base-100 shadow-sm">
+      <div class="card-body p-6 sm:p-8">
+        <div class="text-center">
+          <h2 class="text-3xl font-semibold tracking-tight">Delete account</h2>
+          <p class="mt-2 text-sm text-base-content/60">This action cannot be undone. Please be certain.</p>
+        </div>
 
-    <div class="border border-black p-8 mt-6">
-      <div class="flex">
-        <i class="fa-solid fa-triangle-exclamation text-black self-start mt-1"></i>
-        <div class="ml-3">
-          <h3 class="text-sm font-medium uppercase tracking-widest text-black">
-            Warning
-          </h3>
-          <div class="mt-2 text-sm text-gray">
-            <p>
-              Deleting your account will permanently remove all your data and cannot be undone.
-            </p>
+        <div class="alert alert-warning items-start">
+          <i class="fa-solid fa-triangle-exclamation mt-0.5"></i>
+          <div>
+            <h3 class="text-sm font-medium">Warning</h3>
+            <p class="mt-1 text-sm leading-6">Deleting your account will permanently remove all your data and cannot be undone.</p>
           </div>
         </div>
+
+        <form class="space-y-5" method="POST" action="{% url 'account_delete' %}">
+      {% csrf_token %}
+
+          {% include "components/ui/input.html" with id="id_password" name="password" type="password" label="Current password" placeholder="Enter your password to confirm" required=True no_margin=True %}
+
+          {% include "components/error_block.html" %}
+
+          {% include "components/ui/button.html" with text="Delete account" icon="fa-solid fa-trash-alt" type="submit" variant="error" class="w-full" %}
+
+          <div class="text-center text-sm">
+            <a href="{% url 'dashboard:profile' %}" class="link link-primary">Cancel and return to profile</a>
+          </div>
+        </form>
       </div>
     </div>
-
-    <form class="mt-8 space-y-6" method="POST" action="{% url 'account_delete' %}">
-      {% csrf_token %}
-      
-      <div>
-        <label for="id_password" class="block text-xs font-medium tracking-widest uppercase mb-1">Current password</label>
-        <input id="id_password" name="password" type="password" autocomplete="current-password" required
-               class="border-b-2 border-t-0 border-x-0 border-black p-3 w-full focus:border-dark-gray focus:outline-none"
-               placeholder="Enter your password to confirm">
-      </div>
-
-      {% include "components/error_block.html" with no_margin=True %}
-
-      <div>
-        <button type="submit"
-                class="relative w-full flex justify-center py-3 px-6 bg-black text-white hover:bg-dark-gray focus:outline-none transition-all duration-300 text-sm font-medium uppercase tracking-wider mt-8">
-          <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-            <i class="fa-solid fa-trash-alt"></i>
-          </span>
-          DELETE ACCOUNT
-        </button>
-      </div>
-
-      <div class="text-sm text-center mt-4">
-        <a href="{% url 'dashboard:profile' %}" class="font-medium text-black hover:text-dark-gray transition-all duration-300 uppercase tracking-wider">
-          CANCEL AND RETURN TO PROFILE
-        </a>
-      </div>
-    </form>
   </div>
 </div>
 {% endblock %}

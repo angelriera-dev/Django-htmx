@@ -1,0 +1,17 @@
+{% comment %}Hero section - Landing page{% endcomment %}
+<section class="hero min-h-[80vh] bg-base-200">
+  <div class="hero-content text-center py-20">
+    <div class="max-w-3xl">
+      <div class="badge badge-lg badge-primary mb-4">{{ badge|default:"v1.0 Released" }}</div>
+      <h1 class="text-5xl font-bold">
+        {{ title|default:"Build Your SaaS" }} <span class="text-primary">{{ highlight|default:"Faster" }}</span>
+      </h1>
+      <p class="py-6 text-base-content/70 text-lg">{{ description|default:"A production-ready Django starter kit with authentication, payments, and modern frontend. Ship your SaaS in days, not months." }}</p>
+      <div class="flex gap-4 justify-center flex-wrap">
+        {% include "components/ui/button.html" with text=cta_primary_text|default:"Start Free" href=cta_primary_url|default:"account_signup" variant="primary" size="lg" icon="fa-solid fa-rocket" %}
+        {% include "components/ui/button.html" with text=cta_secondary_text|default:"Demo" href=cta_secondary_url|default:"#features" variant="outline" size="lg" icon="fa-solid fa-play" %}
+      </div>
+      {% if note %}<p class="mt-4 text-sm text-base-content/50">{{ note|safe }}</p>{% endif %}
+    </div>
+  </div>
+</section>

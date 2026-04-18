@@ -1,32 +1,35 @@
 {% extends "base.html" %}
 
-{% block title %}Sign Up - Django SaaS{% endblock %}
+{% block title %}Sign Up | SaaS Boilerplate{% endblock %}
 
 {% block content %}
-<div class="min-h-screen flex items-center justify-center px-4 py-16">
-  <div class="w-full max-w-md space-y-8">
-    
-    <div class="text-center">
-      <h2 class="text-2xl font-semibold text-gray-900">Create account</h2>
-      <p class="mt-2 text-sm text-gray-500">
-        Or {% include "components/link.html" with url="account_login" text="sign in" %}
-      </p>
+<div class="flex min-h-[calc(100vh-5rem)] items-center justify-center px-4 py-10">
+  <div class="w-full max-w-md">
+    <div class="card bg-base-100 border border-base-200 shadow-sm">
+      <div class="card-body p-6 sm:p-8">
+        <div class="text-center">
+          <h2 class="text-3xl font-semibold tracking-tight">Create account</h2>
+          <p class="mt-2 text-sm text-base-content/60">
+            Or {% include "components/ui/link.html" with url="account_login" text="sign in" %}
+          </p>
+        </div>
+
+        <form method="POST" action="{% url 'account_signup' %}" class="space-y-5">
+          {% csrf_token %}
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+
+          {% include "components/ui/input.html" with id="id_email" name="email" type="email" label="Email" placeholder="you@example.com" required=True %}
+          {% include "components/ui/input.html" with id="id_password1" name="password1" type="password" label="Password" placeholder="••••••••" required=True %}
+          {% include "components/ui/input.html" with id="id_password2" name="password2" type="password" label="Confirm password" placeholder="••••••••" required=True no_margin=True %}
+
+          {% include "components/error_block.html" %}
+
+          {% include "components/ui/button.html" with text="Create account" icon="fa-solid fa-user-plus" type="submit" class="w-full" %}
+        </form>
+      </div>
     </div>
-
-    <form method="POST" action="{% url 'account_signup' %}" class="space-y-6">
-      {% csrf_token %}
-      {% if redirect_field_value %}
-      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
-      {% endif %}
-      
-      {% include "components/input.html" with id="id_email" name="email" type="email" label="Email" placeholder="you@example.com" required=True %}
-      {% include "components/input.html" with id="id_password1" name="password1" type="password" label="Password" placeholder="••••••••" required=True %}
-      {% include "components/input.html" with id="id_password2" name="password2" type="password" label="Confirm password" placeholder="••••••••" required=True no_margin=True %}
-
-      {% include "components/error_block.html" %}
-
-      {% include "components/button.html" with text="Create account" icon="fa-solid fa-user-plus" %}
-    </form>
   </div>
 </div>
 {% endblock %}

@@ -1,54 +1,35 @@
 {% extends "base.html" %}
 
-{% block title %}Change Email - Django SaaS{% endblock %}
+{% block title %}Change Email | SaaS Boilerplate{% endblock %}
 
 {% block content %}
-<div class="min-h-[60vh] flex items-center justify-center py-16 px-8">
-  <div class="w-full max-w-md space-y-8">
-    <div>
-      <h2 class="mt-6 text-center text-3xl font-medium tracking-tighter text-black">
-        CHANGE EMAIL
-      </h2>
-      <p class="mt-2 text-center text-sm text-gray">
-        Enter your new email address and current password to confirm the change.
-      </p>
-    </div>
-    
-    <form class="mt-8 space-y-6" method="POST" action="{% url 'account_email' %}">
+<div class="flex min-h-[calc(100vh-5rem)] items-center justify-center px-4 py-10">
+  <div class="w-full max-w-md">
+    <div class="card border border-base-200 bg-base-100 shadow-sm">
+      <div class="card-body p-6 sm:p-8">
+        <div class="text-center">
+          <h2 class="text-3xl font-semibold tracking-tight">Change email</h2>
+          <p class="mt-2 text-sm text-base-content/60">
+            Enter your new email address and current password to confirm the change.
+          </p>
+        </div>
+
+        <form class="space-y-5" method="POST" action="{% url 'account_email' %}">
       {% csrf_token %}
-      
-      <div>
-        <label for="id_email" class="block text-xs font-medium tracking-widest uppercase mb-1">New email address</label>
-        <input id="id_email" name="email" type="email" autocomplete="email" required
-               class="border-b-2 border-t-0 border-x-0 border-black p-3 w-full focus:border-dark-gray focus:outline-none"
-               placeholder="New email address">
-      </div>
-      
-      <div class="mt-6">
-        <label for="id_password" class="block text-xs font-medium tracking-widest uppercase mb-1">Current password</label>
-        <input id="id_password" name="password" type="password" autocomplete="current-password" required
-               class="border-b-2 border-t-0 border-x-0 border-black p-3 w-full focus:border-dark-gray focus:outline-none"
-               placeholder="Current password">
-      </div>
 
-      {% include "components/error_block.html" with no_margin=True %}
+          {% include "components/ui/input.html" with id="id_email" name="email" type="email" label="New email address" placeholder="New email address" required=True %}
+          {% include "components/ui/input.html" with id="id_password" name="password" type="password" label="Current password" placeholder="Current password" required=True no_margin=True %}
 
-      <div>
-        <button type="submit" name="action_add"
-                class="relative w-full flex justify-center py-3 px-6 bg-black text-white hover:bg-dark-gray focus:outline-none transition-all duration-300 text-sm font-medium uppercase tracking-wider mt-8">
-          <span class="absolute left-0 inset-y-0 flex items-center pl-3">
-            <i class="fa-solid fa-envelope"></i>
-          </span>
-          CHANGE EMAIL
-        </button>
-      </div>
+          {% include "components/error_block.html" %}
 
-      <div class="text-sm text-center mt-4">
-        <a href="{% url 'dashboard:profile' %}" class="font-medium text-black hover:text-dark-gray transition-all duration-300 uppercase tracking-wider">
-          BACK TO PROFILE
-        </a>
+          {% include "components/ui/button.html" with text="Change email" icon="fa-solid fa-envelope" type="submit" class="w-full" %}
+
+          <div class="text-center text-sm">
+            <a href="{% url 'dashboard:profile' %}" class="link link-primary">Back to profile</a>
+          </div>
+        </form>
       </div>
-    </form>
+    </div>
   </div>
 </div>
 {% endblock %}

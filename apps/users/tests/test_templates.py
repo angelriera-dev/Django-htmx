@@ -17,11 +17,10 @@ class TestTemplateComponents:
     """Test that all template components exist and load correctly."""
 
     COMPONENTS = [
-        'components/input.html',
-        'components/button.html',
-        'components/link.html',
+        'components/ui/input.html',
+        'components/ui/button.html',
+        'components/ui/link.html',
         'components/error_block.html',
-        'components/form_field.html',
     ]
 
     @pytest.mark.parametrize('template_path', COMPONENTS)
@@ -35,7 +34,7 @@ class TestTemplateComponents:
 
     def test_input_component_renders(self):
         """Input component should render with context."""
-        template = get_template('components/input.html')
+        template = get_template('components/ui/input.html')
         rendered = template.render({
             'id': 'test_id',
             'name': 'test_name',
@@ -50,7 +49,7 @@ class TestTemplateComponents:
 
     def test_button_component_renders(self):
         """Button component should render with text."""
-        template = get_template('components/button.html')
+        template = get_template('components/ui/button.html')
         rendered = template.render({
             'text': 'Submit',
             'icon': 'fa-solid fa-check',
@@ -60,7 +59,7 @@ class TestTemplateComponents:
 
     def test_link_component_renders(self):
         """Link component should render with url and text."""
-        template = get_template('components/link.html')
+        template = get_template('components/ui/link.html')
         # URL tag needs proper context
         from django.urls import reverse
         rendered = template.render({
@@ -92,14 +91,14 @@ class TestAuthTemplates:
         """Login should use input component."""
         template = get_template('account/login.html')
         source = template.template.source
-        assert 'components/input.html' in source
-        assert 'components/button.html' in source
+        assert 'components/ui/input.html' in source
+        assert 'components/ui/button.html' in source
 
     def test_signup_uses_components(self):
         """Signup should use input components."""
         template = get_template('account/signup.html')
         source = template.template.source
-        assert 'components/input.html' in source
+        assert 'components/ui/input.html' in source
 
 
 class TestTemplateReduction:

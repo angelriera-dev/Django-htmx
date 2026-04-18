@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
 
-from .models import SubscriptionPlan, UserSettings
+from apps.dashboard.models import SubscriptionPlan, UserSettings
 
 User = get_user_model()
 
@@ -27,6 +27,38 @@ class DashboardAccessTests(TestCase):
         self.client.force_login(user)
         response = self.client.get('/dashboard/')
         self.assertEqual(response.status_code, 200)
+
+    def test_dashboard_home_renders_navigation_shell(self):
+        user = User.objects.create_user(email='test@example.com', password='testpass123')
+        self.client.force_login(user)
+        response = self.client.get('/dashboard/')
+        self.assertContains(response, 'data-theme')
+        self.assertContains(response, 'sidebar')
+        self.assertContains(response, 'Toggle theme')
+
+    def test_settings_page_renders_new_ui_sections(self):
+        user = User.objects.create_user(email='test@example.com', password='testpass123')
+        self.client.force_login(user)
+        response = self.client.get('/dashboard/settings/')
+        self.assertContains(response, 'Email notifications')
+        self.assertContains(response, 'API access')
+        self.assertContains(response, 'Subscription')
+
+
+class AuthUiSmokeTests(TestCase):
+    def test_login_page_uses_modern_shell(self):
+        response = self.client.get(reverse('account_login'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Sign in')
+        self.assertContains(response, 'card bg-base-100')
+
+    def test_logout_page_uses_modern_confirmation(self):
+        user = User.objects.create_user(email='test@example.com', password='testpass123')
+        self.client.force_login(user)
+        response = self.client.get(reverse('account_logout'))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Sign out')
+        self.assertContains(response, 'end this session')
 
 
 class SubscriptionPlanModelTests(TestCase):

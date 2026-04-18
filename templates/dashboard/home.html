@@ -2,69 +2,42 @@
 
 {% block title %}Overview | SaaS Boilerplate{% endblock %}
 {% block page_title %}Overview{% endblock %}
+{% block page_actions %}
+<a href="{% url 'dashboard:settings' %}" class="btn btn-ghost btn-sm">Settings</a>
+<a href="{% url 'dashboard:subscription_plans' %}" class="btn btn-primary btn-sm">Upgrade</a>
+{% endblock %}
 
 {% block dashboard_content %}
-<div class="mb-8">
-    <h2 class="text-xl font-medium text-black">Welcome back{% if user.first_name %}, {{ user.first_name }}{% endif %}</h2>
-    <p class="mt-1 text-sm text-gray">Here's what's happening with your account.</p>
+<div class="mb-8 rounded-2xl border border-base-200 bg-base-100 p-6 shadow-sm sm:p-8">
+  <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+    <div>
+      <p class="text-xs uppercase tracking-wider text-base-content/50">Welcome back</p>
+      <h2 class="mt-2 text-3xl font-semibold tracking-tight">
+        {% if user.first_name %}{{ user.first_name }}, {% endif %}this is your workspace
+      </h2>
+      <p class="mt-2 max-w-2xl text-sm text-base-content/60">
+        A cleaner dashboard shell, consistent navigation, and a theme that now persists across every route.
+      </p>
+    </div>
+    <div class="flex flex-wrap gap-2">
+      <a href="{% url 'dashboard:profile' %}" class="btn btn-outline btn-sm">Edit profile</a>
+      <a href="{% url 'dashboard:subscription_plans' %}" class="btn btn-primary btn-sm">View plans</a>
+    </div>
+  </div>
 </div>
 
-<div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-    {% include "components/card_stat.html" with title="Users" value="1" subtitle="Total registered" icon="fa-users" %}
-    {% include "components/card_stat.html" with title="Projects" value="0" subtitle="Active projects" icon="fa-folder" %}
-    {% include "components/card_stat.html" with title="Plan" value="Free" subtitle="Upgrade plan" icon="fa-gem" link_url="dashboard:subscription_plans" %}
+<div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+  {% include "dashboard/ui/stat_card.html" with title="Users" value="1" icon="fa-users" subtitle="Total registered" %}
+  {% include "dashboard/ui/stat_card.html" with title="Projects" value="0" icon="fa-folder" subtitle="Active projects" %}
+  {% include "dashboard/ui/stat_card.html" with title="Plan" value="Free" icon="fa-gem" link_url="dashboard:subscription_plans" link_text="Upgrade plan" %}
 </div>
 
-<div class="mt-8 grid grid-cols-1 lg:grid-cols-3 gap-4">
-    <div class="lg:col-span-2 bg-white border border-light-gray rounded">
-        <div class="px-5 py-4 border-b border-light-gray">
-            <h3 class="text-sm font-medium text-black">Recent activity</h3>
-        </div>
-        <div class="divide-y divide-light-gray">
-            <div class="flex items-center justify-between px-5 py-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-7 h-7 bg-[#fafafa] rounded flex items-center justify-center">
-                        <i class="fa-solid fa-user-plus text-gray text-xs"></i>
-                    </div>
-                    <p class="text-sm text-gray">Account created</p>
-                </div>
-                <time class="text-xs text-gray">{{ user.date_joined|date:"M d, Y" }}</time>
-            </div>
-            <div class="flex items-center justify-between px-5 py-3">
-                <div class="flex items-center gap-3">
-                    <div class="w-7 h-7 bg-[#fafafa] rounded flex items-center justify-center">
-                        <i class="fa-solid fa-envelope-circle-check text-gray text-xs"></i>
-                    </div>
-                    <p class="text-sm text-gray">Email verified</p>
-                </div>
-                <time class="text-xs text-gray">{{ user.date_joined|date:"M d, Y" }}</time>
-            </div>
-        </div>
-    </div>
-
-    <div class="bg-white border border-light-gray rounded">
-        <div class="px-5 py-4 border-b border-light-gray">
-            <h3 class="text-sm font-medium text-black">Quick actions</h3>
-        </div>
-        <div class="p-4 space-y-2">
-            <a href="{% url 'dashboard:profile' %}" class="flex items-center gap-3 px-3 py-2.5 rounded hover:bg-[#fafafa] transition-colors group">
-                <i class="fa-solid fa-user-pen text-gray text-xs w-4 text-center"></i>
-                <span class="text-sm text-gray group-hover:text-black">Edit profile</span>
-            </a>
-            <a href="{% url 'dashboard:settings' %}" class="flex items-center gap-3 px-3 py-2.5 rounded hover:bg-[#fafafa] transition-colors group">
-                <i class="fa-solid fa-gear text-gray text-xs w-4 text-center"></i>
-                <span class="text-sm text-gray group-hover:text-black">Settings</span>
-            </a>
-            <a href="{% url 'dashboard:subscription_plans' %}" class="flex items-center gap-3 px-3 py-2.5 rounded hover:bg-[#fafafa] transition-colors group">
-                <i class="fa-solid fa-arrow-up-right-from-square text-gray text-xs w-4 text-center"></i>
-                <span class="text-sm text-gray group-hover:text-black">Upgrade plan</span>
-            </a>
-            <a href="{% url 'dashboard:generate_api_key' %}" class="flex items-center gap-3 px-3 py-2.5 rounded hover:bg-[#fafafa] transition-colors group" onclick="event.preventDefault(); document.getElementById('api-key-form').submit();">
-                <i class="fa-solid fa-key text-gray text-xs w-4 text-center"></i>
-                <span class="text-sm text-gray group-hover:text-black">Generate API key</span>
-            </a>
-            <form id="api-key-form" action="{% url 'dashboard:generate_api_key' %}" method="POST" class="hidden">{% csrf_token %}</form>
-        </div>
-    </div>
+<div class="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-3">
+  <div class="lg:col-span-2">
+    {% include "dashboard/ui/activity_list.html" with items=activities %}
+  </div>
+  <div>
+    {% include "dashboard/ui/quick_actions.html" with actions=quick_actions %}
+  </div>
 </div>
 {% endblock %}

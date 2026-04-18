@@ -1,0 +1,26 @@
+{% comment %}
+Input atomo - minimal DaisyUI input
+Usage:
+  {% include "components/ui/input.html" with name="email" label="Email" %}
+  {% include "components/ui/input.html" with name="password" type="password" label="Password" required=True %}
+Variables:
+  name, label, type, placeholder, value, required, disabled, no_margin, class, id
+{% endcomment %}
+<div class="form-control{% if no_margin %} w-full{% endif %}{% if class %} {{ class }}{% endif %}">
+  {% if label %}
+  <label class="label pb-1" for="{{ id|default:name }}">
+    <span class="label-text text-sm font-medium">{{ label }}</span>
+  </label>
+  {% endif %}
+  <input type="{{ type|default:'text' }}" name="{{ name }}" id="{{ id|default:name }}"
+    {% if placeholder %}placeholder="{{ placeholder }}"{% endif %}
+    {% if value %}value="{{ value }}"{% endif %}
+    {% if required %}required{% endif %}
+    {% if disabled %}disabled{% endif %}
+    class="input input-bordered w-full{% if error %} input-error{% endif %}">
+  {% if error %}
+  <label class="label">
+    <span class="label-text-alt text-error">{{ error }}</span>
+  </label>
+  {% endif %}
+</div>

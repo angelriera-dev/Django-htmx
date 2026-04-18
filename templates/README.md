@@ -15,12 +15,13 @@
 templates/
 ├── base.html              # Template raíz
 ├── account/               # Autenticación allauth
-│   └── auth_base.html     # Base para auth (opcional)
 ├── dashboard/             # Vistas del dashboard
 ├── components/           # Componentes reutilizables
-│   ├── button.html
-│   ├── input.html
-│   ├── link.html
+│   ├── ui/
+│   │   ├── button.html
+│   │   ├── input.html
+│   │   ├── link.html
+│   │   └── ...
 │   └── error_block.html
 └── admin/                 # Templates Django admin
 ```
@@ -30,7 +31,7 @@ templates/
 ** atomic design: cada componente hace una cosa**
 
 ```html
-{% include "components/button.html" with text="Submit" %}
+{% include "components/ui/button.html" with text="Submit" %}
 ```
 
 **Reglas:**
@@ -80,7 +81,7 @@ Evitar多层 herencia (más de 2 niveles).
 {% block title %}Sign In{% endblock %}
 
 {% block content %}
-{% include "components/auth_card.html" with form=form %}
+{% include "account/login.html" %}
 {% endblock %}
 ```
 
@@ -90,3 +91,8 @@ Evitar多层 herencia (más de 2 niveles).
 2. Mantener simple — un componente, una cosa
 3. Usar estilos existentes antes de crear nuevos
 4. Documentar con comments si lógica es compleja
+
+## Backlog Futuro
+
+- [ ] Agregar una suite de visual regression para capturar screenshots por ruta, tema y breakpoint
+- [ ] Mantener una baseline aprobada para detectar regresiones visuales en CI

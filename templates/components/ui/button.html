@@ -1,0 +1,20 @@
+{% comment %}
+Button atomo - minimal DaisyUI button
+Usage: 
+  {% include "components/ui/button.html" with text="Click" %}
+  {% include "components/ui/button.html" with text="Go" variant="secondary" size="sm" href="/url" %}
+Variables:
+  text, href, variant (primary|secondary|accent|ghost|link), size (sm|lg), type (submit|button), no_margin, class
+{% endcomment %}
+
+  {% if href %}
+  <a href="{{ href }}"
+  {% else %} 
+  <button type="{{ type|default:'button' }}"
+  {% endif %}
+  
+  class="btn inline-flex items-center justify-center gap-2 leading-none{% if variant %} btn-{{ variant|default:'ghost' }}{% else %} {% endif %}{% if size %} btn-{{ size }}{% endif %}{% if no_margin %} ms-0{% endif %}{% if class %} {{ class }}{% endif %}"
+  {% if disabled %}disabled{% endif %}
+>
+  {% if icon %}<i class="{{ icon }}{% if icon_position != 'right' %} me-2{% else %} ms-2{% endif %}"></i>{% endif %}<span class="leading-none">{{ text }}</span>
+{% if href %}</a>{% else %}</button>{% endif %}

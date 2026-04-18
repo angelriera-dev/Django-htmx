@@ -1,88 +1,76 @@
 {% extends "base.html" %}
 
-{% block title %}Manage Email - Django SaaS{% endblock %}
+{% block title %}Manage Email | SaaS Boilerplate{% endblock %}
 
 {% block content %}
-<div class="min-h-[60vh] flex items-center justify-center py-16 px-8">
-  <div class="w-full max-w-md space-y-8">
-    <div>
-      <h2 class="mt-6 text-center text-3xl font-medium tracking-tighter text-black">
-        EMAIL ADDRESSES
-      </h2>
-      <p class="mt-2 text-center text-sm text-gray">
-        Manage the email addresses associated with your account
-      </p>
+<div class="flex min-h-[calc(100vh-5rem)] items-center justify-center px-4 py-10">
+  <div class="w-full max-w-2xl space-y-6">
+    <div class="text-center">
+      <h2 class="text-3xl font-semibold tracking-tight">Email addresses</h2>
+      <p class="mt-2 text-sm text-base-content/60">Manage the email addresses associated with your account.</p>
     </div>
 
-    <div class="mt-8 space-y-6">
-      {% if emailaddresses %}
-      <div class="border border-light-gray p-8">
-        <h3 class="text-sm font-medium uppercase tracking-widest text-black mb-4">
-          Your email addresses
-        </h3>
-        <ul class="space-y-4">
+    {% if emailaddresses %}
+    <div class="card bg-base-100 border border-base-200 shadow-sm">
+      <div class="card-body p-0">
+        <div class="px-6 py-4 border-b border-base-200">
+          <h3 class="text-sm font-medium">Your email addresses</h3>
+        </div>
+        <div class="divide-y divide-base-200">
           {% for emailaddress in emailaddresses %}
-          <li class="flex items-center justify-between">
-            <div class="flex items-center">
+          <label class="flex cursor-pointer items-center justify-between gap-4 px-6 py-4 hover:bg-base-200/60 transition-colors">
+            <div class="flex items-center gap-3">
               <input type="radio" name="email" value="{{ emailaddress.email }}"
                      {% if emailaddress.primary %}checked{% endif %}
                      form="email-manage-form"
-                     class="h-4 w-4 border-light-gray focus:ring-0 focus:outline-none">
-              <span class="ml-3 text-sm text-black">{{ emailaddress.email }}</span>
-              {% if emailaddress.verified %}
-              <span class="ml-2 text-xs text-gray uppercase tracking-wider">Verified</span>
-              {% else %}
-              <span class="ml-2 text-xs text-red uppercase tracking-wider">Unverified</span>
-              {% endif %}
-              {% if emailaddress.primary %}
-              <span class="ml-2 text-xs text-black uppercase tracking-wider font-medium">Primary</span>
-              {% endif %}
+                     class="radio radio-primary radio-sm">
+              <div>
+                <p class="text-sm font-medium">{{ emailaddress.email }}</p>
+                <div class="mt-1 flex flex-wrap gap-2 text-xs">
+                  {% if emailaddress.verified %}
+                  <span class="badge badge-success badge-sm">Verified</span>
+                  {% else %}
+                  <span class="badge badge-error badge-sm">Unverified</span>
+                  {% endif %}
+                  {% if emailaddress.primary %}
+                  <span class="badge badge-neutral badge-sm">Primary</span>
+                  {% endif %}
+                </div>
+              </div>
             </div>
-          </li>
+          </label>
           {% endfor %}
-        </ul>
+        </div>
 
-        <form id="email-manage-form" method="POST" action="{% url 'account_email' %}" class="mt-6 flex space-x-4">
+        <form id="email-manage-form" method="POST" action="{% url 'account_email' %}" class="flex flex-wrap gap-3 border-t border-base-200 px-6 py-4">
           {% csrf_token %}
-          <button type="submit" name="action_primary" class="py-2 px-4 border border-black text-sm font-medium uppercase tracking-wider text-black hover:bg-light-gray transition-all duration-300">
-            MAKE PRIMARY
-          </button>
-          <button type="submit" name="action_send" class="py-2 px-4 border border-black text-sm font-medium uppercase tracking-wider text-black hover:bg-light-gray transition-all duration-300">
-            RE-SEND VERIFICATION
-          </button>
-          <button type="submit" name="action_remove" class="py-2 px-4 border border-red text-sm font-medium uppercase tracking-wider text-red hover:bg-red hover:text-white transition-all duration-300">
-            REMOVE
-          </button>
+          <button type="submit" name="action_primary" class="btn btn-outline btn-sm">Make primary</button>
+          <button type="submit" name="action_send" class="btn btn-outline btn-sm">Re-send verification</button>
+          <button type="submit" name="action_remove" class="btn btn-error btn-outline btn-sm">Remove</button>
         </form>
       </div>
-      {% endif %}
+    </div>
+    {% endif %}
 
-      <div class="border border-light-gray p-8">
-        <h3 class="text-sm font-medium uppercase tracking-widest text-black mb-4">
-          Add email address
-        </h3>
-        <form method="POST" action="{% url 'account_email' %}">
-          {% csrf_token %}
-          <div>
-            <label for="id_email" class="block text-xs font-medium tracking-widest uppercase mb-1">Email</label>
-            <input id="id_email" name="email" type="email" required
-                   class="border-b-2 border-t-0 border-x-0 border-black p-3 w-full focus:border-dark-gray focus:outline-none"
-                   placeholder="New email address">
-          </div>
-          <button type="submit" name="action_add"
-                  class="mt-4 w-full flex justify-center py-3 px-6 bg-black text-white hover:bg-dark-gray focus:outline-none transition-all duration-300 text-sm font-medium uppercase tracking-wider">
-            ADD EMAIL
-          </button>
-        </form>
+    <div class="card bg-base-100 border border-base-200 shadow-sm">
+      <div class="card-body p-0">
+        <div class="px-6 py-4 border-b border-base-200">
+          <h3 class="text-sm font-medium">Add email address</h3>
+        </div>
+        <div class="p-6">
+          <form method="POST" action="{% url 'account_email' %}" class="space-y-5">
+            {% csrf_token %}
+            {% include "components/ui/input.html" with id="id_email" name="email" type="email" label="Email" placeholder="New email address" required=True no_margin=True %}
+            <button type="submit" name="action_add" class="btn btn-primary btn-block">Add email</button>
+          </form>
+        </div>
       </div>
+    </div>
 
-      {% include "components/error_block.html" with no_margin=True %}
+    {% include "components/error_block.html" with no_margin=True %}
 
-      <div class="text-sm text-center mt-4">
-        <a href="{% url 'dashboard:profile' %}" class="font-medium text-black hover:text-dark-gray transition-all duration-300 uppercase tracking-wider">
-          BACK TO PROFILE
-        </a>
-      </div>
+    <div class="text-center text-sm">
+      <a href="{% url 'dashboard:profile' %}" class="link link-primary">Back to profile</a>
     </div>
   </div>
 </div>

@@ -1,0 +1,22 @@
+{% comment %}
+Stat card molecule - Dashboard stat display
+Usage: {% include "dashboard/ui/stat_card.html" with title="Users" value="123" subtitle="Total" %}
+{% endcomment %}
+<div class="card bg-base-100 border border-base-200 shadow-sm">
+  <div class="card-body p-5">
+    <div class="flex items-center justify-between">
+      <p class="text-xs font-medium uppercase tracking-wider text-base-content/60">{{ title }}</p>
+      {% if icon %}
+      <div class="flex h-9 w-9 items-center justify-center rounded-full bg-base-200">
+        <i class="{{ icon }} text-xs text-base-content/60 leading-none"></i>
+      </div>
+      {% endif %}
+    </div>
+    <p class="mt-3 text-3xl font-semibold leading-none text-base-content">{{ value }}</p>
+    {% if link_url %}
+    <a href="{% url link_url %}" class="mt-1 text-xs text-base-content/60 hover:text-base-content transition-colors">{{ link_text }} &rarr;</a>
+    {% else %}
+    <p class="mt-1 text-xs text-base-content/60">{{ subtitle }}</p>
+    {% endif %}
+  </div>
+</div>

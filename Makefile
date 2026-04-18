@@ -1,19 +1,22 @@
 
-APP_NAME := app
 
-
-start:
-	@.venv/bin/python manage.py runserver
-
-migrate:
-	@.venv/bin/python manage.py migrate
-
-
-
-
-
+init:
+	python3 -m venv .venv
+	pip install --upgrade pip
+	.venv/bin/pip install -r requirements.txt
 
 dev:
+	.venv/bin/python manage.py runserver
+
+migrate:
+	.venv/bin/python manage.py migrate
+
+
+
+
+APP_NAME := app
+
+dev_container:
 	@bash -lc '\
 	if docker ps --filter "name=app-app" --format "{{.Names}}" | grep -q "app-app"; then \
 		echo "Development container already running."; \
@@ -25,7 +28,7 @@ dev:
 	exec docker compose -f docker-compose.yml --project-name $(APP_NAME) exec $(APP_NAME) bash'
 
 
-clear:
+clear_container:
 	@docker compose down &&
 
 

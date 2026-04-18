@@ -1,0 +1,13 @@
+
+
+
+<div class="avatar placeholder">
+    <div class="flex
+    {% if size == 'sm' %} h-4 w-4 text-sm
+    {% elif size == 'md' %} h-9 w-8 text-sm
+    {% elif size == 'lg' %} h-14 w-14 text-lg
+    {% elif size == 'xl' %} h-24 w-24 text-2xl
+    {% else %}   h-8 w-8  text-sm   {% endif %} items-center justify-center rounded-full bg-primary text-primary-content">
+        <span class="text-xl leading-none">{{ content|default:user.email|first|upper }}</span>
+    </div>
+</div>

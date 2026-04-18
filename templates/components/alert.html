@@ -1,0 +1,12 @@
+{% comment %}
+Usage: {% include "components/alert.html" with type="success" icon="fa-check" text="Success!" %}
+{% endcomment %}
+<div class="alert{% if type %} alert-{{ type }}{% else %} alert-info{% endif %}{% if class %} {{ class }}{% endif %} items-start" role="alert">
+  {% if icon %}<i class="{{ icon }} mt-0.5"></i>{% endif %}
+  <span class="leading-6">{{ text }}</span>
+  {% if dismissible %}
+  <button class="btn btn-sm btn-ghost" onclick="this.parentElement.remove()">
+    <i class="fa-solid fa-xmark"></i>
+  </button>
+  {% endif %}
+</div>

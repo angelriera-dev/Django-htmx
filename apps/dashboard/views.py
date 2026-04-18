@@ -4,6 +4,7 @@ import secrets
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.utils import timezone
 from django.views.decorators.http import require_http_methods
 
@@ -18,7 +19,18 @@ from .tasks import (
 @login_required
 @require_http_methods(['GET'])
 def dashboard_home(request):
-    return render(request, 'dashboard/home.html')
+    user = request.user
+    joined = user.date_joined.strftime('%b %d, %Y')
+    activities = [
+        {'icon': 'fa-solid fa-user-plus', 'text': 'Account created', 'time': joined},
+        {'icon': 'fa-solid fa-envelope-circle-check', 'text': 'Email verified', 'time': joined},
+    ]
+    quick_actions = [
+        {'href': reverse('dashboard:profile'), 'icon': 'fa-solid fa-user-pen', 'text': 'Edit profile'},
+        {'href': reverse('dashboard:settings'), 'icon': 'fa-solid fa-gear', 'text': 'Settings'},
+        {'href': reverse('dashboard:subscription_plans'), 'icon': 'fa-solid fa-arrow-up-right-from-square', 'text': 'Upgrade plan'},
+    ]
+    return render(request, 'dashboard/home.html', {'activities': activities, 'quick_actions': quick_actions})
 
 @login_required
 @require_http_methods(['GET', 'POST'])

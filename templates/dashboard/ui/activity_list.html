@@ -1,0 +1,29 @@
+{% load i18n %}
+{% comment %}
+Activity list molecule - Dashboard activity display
+Usage:
+  {% include "dashboard/ui/activity_list.html" with title="Recent activity" items=activity_items %}
+Variables: title, items (list of dicts with: icon, icon_bg, text, time)
+{% endcomment %}
+<div class="card bg-base-100 border border-base-200 shadow-sm">
+  <div class="card-body p-0">
+    <div class="px-5 py-4 border-b border-base-200">
+      <h3 class="text-sm font-medium">{{ title|default:"Recent activity" }}</h3>
+    </div>
+    <div class="divide-y divide-base-200">
+      {% for item in items %}
+      <div class="flex items-center justify-between gap-4 px-5 py-3">
+        <div class="flex items-center gap-3">
+          <div class="flex h-8 w-8 items-center justify-center rounded-full {{ item.icon_bg|default:"bg-base-200" }}">
+            <i class="{{ item.icon }} text-xs text-base-content/60 leading-none"></i>
+          </div>
+          <p class="text-sm text-base-content/70">{{ item.text }}</p>
+        </div>
+        <time class="text-xs text-base-content/50">{{ item.time }}</time>
+      </div>
+      {% empty %}
+      <div class="px-5 py-4 text-center text-sm text-base-content/50">No activity</div>
+      {% endfor %}
+    </div>
+  </div>
+</div>

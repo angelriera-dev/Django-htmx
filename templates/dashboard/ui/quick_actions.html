@@ -1,0 +1,30 @@
+{% comment %}
+Quick actions molecule - Dashboard menu
+Usage:
+  {% include "dashboard/ui/quick_actions.html" with actions=menu_actions %}
+Variables: actions (list of dicts with: href, icon, text, method)
+{% endcomment %}
+<div class="card bg-base-100 border border-base-200 shadow-sm">
+  <div class="card-body p-0">
+    <div class="px-5 py-4 border-b border-base-200">
+      <h3 class="text-sm font-medium">Quick actions</h3>
+    </div>
+    <div class="p-2">
+      {% for action in actions %}
+      {% if action.method == 'POST' %}
+      <form action="{{ action.href }}" method="POST">{% csrf_token %}
+        <button type="submit" class="flex w-full items-center gap-3 rounded-lg px-3 py-3 text-left hover:bg-base-200 transition-colors">
+          <i class="{{ action.icon }} w-5 text-center text-base-content/60 leading-none"></i>
+          <span class="text-sm">{{ action.text }}</span>
+        </button>
+      </form>
+      {% else %}
+      <a href="{{ action.href }}" class="flex items-center gap-3 rounded-lg px-3 py-3 hover:bg-base-200 transition-colors">
+        <i class="{{ action.icon }} w-5 text-center text-base-content/60 leading-none"></i>
+        <span class="text-sm">{{ action.text }}</span>
+      </a>
+      {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</div>

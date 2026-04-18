@@ -1,10 +1,8 @@
 from django.conf import settings
 from django.core.mail import send_mail
-from django.tasks import task
 
 
-@task
-def send_subscription_confirmation_email(user_email, plan_name):
+def _send_subscription_confirmation_email(user_email, plan_name):
     """Send confirmation email when a user subscribes to a plan."""
     send_mail(
         subject=f"Subscription Confirmed - {plan_name}",
@@ -14,8 +12,7 @@ def send_subscription_confirmation_email(user_email, plan_name):
     )
 
 
-@task
-def send_subscription_cancellation_email(user_email):
+def _send_subscription_cancellation_email(user_email):
     """Send notification email when a user cancels their subscription."""
     send_mail(
         subject="Subscription Cancelled",
@@ -25,8 +22,7 @@ def send_subscription_cancellation_email(user_email):
     )
 
 
-@task
-def send_trial_started_email(user_email):
+def _send_trial_started_email(user_email):
     """Send welcome email when a user starts a trial."""
     send_mail(
         subject="Welcome to Your Free Trial!",
@@ -34,3 +30,16 @@ def send_trial_started_email(user_email):
         from_email=settings.EMAIL_HOST_USER or None,
         recipient_list=[user_email],
     )
+
+
+class _TaskShim:
+    def __init__(self, fn):
+        self._fn = fn
+
+    def enqueue(self, *args, **kwargs):
+        return self._fn(*args, **kwargs)
+
+
+send_subscription_confirmation_email = _TaskShim(_send_subscription_confirmation_email)
+send_subscription_cancellation_email = _TaskShim(_send_subscription_cancellation_email)
+send_trial_started_email = _TaskShim(_send_trial_started_email)

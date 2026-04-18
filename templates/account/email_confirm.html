@@ -1,52 +1,37 @@
 {% extends "base.html" %}
 
-{% block title %}Verify Email - Django SaaS{% endblock %}
+{% block title %}Verify Email | SaaS Boilerplate{% endblock %}
 
 {% block content %}
-<div class="min-h-[60vh] flex items-center justify-center py-16 px-8">
-  <div class="w-full max-w-md space-y-8">
-    <div>
-      <h2 class="mt-6 text-center text-3xl font-medium tracking-tighter text-black">
-        VERIFY YOUR EMAIL
-      </h2>
-      <p class="mt-2 text-center text-sm text-gray">
-        We've sent you an email with a verification link. Please check your inbox and click the link to verify your email address.
-      </p>
-    </div>
+{% url 'account_login' as login_url %}
+<div class="flex min-h-[calc(100vh-5rem)] items-center justify-center px-4 py-10">
+  <div class="w-full max-w-md">
+    <div class="card border border-base-200 bg-base-100 shadow-sm">
+      <div class="card-body p-6 sm:p-8 space-y-6">
+        <div class="text-center">
+          <h2 class="text-3xl font-semibold tracking-tight">Verify your email</h2>
+          <p class="mt-2 text-sm text-base-content/60">We've sent you an email with a verification link. Please check your inbox and click the link to verify your email address.</p>
+        </div>
 
-    <div class="mt-8 space-y-6">
-      <div class="border border-light-gray p-8">
-        <div class="flex">
-          <i class="fa-solid fa-envelope text-black self-start mt-1"></i>
-          <div class="ml-3">
-            <h3 class="text-sm font-medium uppercase tracking-widest text-black">
-              Email verification required
-            </h3>
-            <div class="mt-2 text-sm text-gray">
-              <p>
-                If you don't see the email in your inbox, please check your spam folder.
-              </p>
-            </div>
+        <div class="alert items-start">
+          <i class="fa-solid fa-envelope mt-0.5"></i>
+          <div>
+            <h3 class="text-sm font-medium">Email verification required</h3>
+            <p class="mt-1 text-sm leading-6">If you don't see the email in your inbox, please check your spam folder.</p>
           </div>
         </div>
-      </div>
 
-      <div class="text-sm text-center">
-        <p class="text-gray">
-          Didn't receive the email?
-        </p>
-        <form method="POST" action="{% url 'account_email' %}" class="mt-2">
-          {% csrf_token %}
-          <button type="submit" name="action_send" class="font-medium text-black hover:text-dark-gray transition-all duration-300 uppercase tracking-wider">
-            RESEND VERIFICATION EMAIL
-          </button>
-        </form>
-      </div>
+        <div class="text-center text-sm text-base-content/60">
+          <p>Didn't receive the email?</p>
+          <form method="POST" action="{% url 'account_email' %}" class="mt-3">
+            {% csrf_token %}
+            <button type="submit" name="action_send" class="link link-primary font-medium">Resend verification email</button>
+          </form>
+        </div>
 
-      <div class="text-sm text-center mt-6">
-        <a href="{% url 'account_login' %}" class="inline-block py-3 px-6 bg-black text-white hover:bg-dark-gray transition-all duration-300 text-sm font-medium uppercase tracking-wider">
-          BACK TO SIGN IN
-        </a>
+        <div class="text-center">
+          {% include "components/ui/button.html" with text="Back to sign in" href=login_url variant="primary" size="sm" %}
+        </div>
       </div>
     </div>
   </div>

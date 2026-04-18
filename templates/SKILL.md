@@ -41,11 +41,10 @@ All templates in this project use reusable components from `templates/components
 
 | Component | Purpose |
 |-----------|---------|
-| `button.html` | Submit/action buttons |
-| `input.html` | Form input fields |
-| `link.html` | Anchor links |
+| `components/ui/button.html` | Submit/action buttons |
+| `components/ui/input.html` | Form input fields |
+| `components/ui/link.html` | Anchor links |
 | `error_block.html` | Form error display |
-| `form_field.html` | Django form field rendering |
 
 ### Styling System
 
@@ -72,7 +71,7 @@ All templates in this project use reusable components from `templates/components
 ### button.html
 
 ```html
-{% include "components/button.html" with text="Submit" icon="fa-solid fa-check" %}
+{% include "components/ui/button.html" with text="Submit" icon="fa-solid fa-check" %}
 ```
 
 Parameters: `text`, `icon`, `no_margin`
@@ -80,7 +79,7 @@ Parameters: `text`, `icon`, `no_margin`
 ### input.html
 
 ```html
-{% include "components/input.html" with id="id_email" name="email" type="email" label="Email" placeholder="you@example.com" required=True %}
+{% include "components/ui/input.html" with id="id_email" name="email" type="email" label="Email" placeholder="you@example.com" required=True %}
 ```
 
 Parameters: `id`, `name`, `type`, `label`, `placeholder`, `required`, `no_margin`
@@ -88,7 +87,7 @@ Parameters: `id`, `name`, `type`, `label`, `placeholder`, `required`, `no_margin
 ### link.html
 
 ```html
-{% include "components/link.html" with url="account_login" text="Sign in" %}
+{% include "components/ui/link.html" with url="account_login" text="Sign in" %}
 ```
 
 Parameters: `url`, `text`
