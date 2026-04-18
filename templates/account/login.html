@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In - Django SaaS{% endblock %}
+
+{% block content %}
+<div class="min-h-screen flex items-center justify-center px-4 py-16">
+  <div class="w-full max-w-md space-y-8">
+    
+    <div class="text-center">
+      <h2 class="text-2xl font-semibold text-gray-900">Sign in</h2>
+      <p class="mt-2 text-sm text-gray-500">
+        Or {% include "components/link.html" with url="account_signup" text="create an account" %}
+      </p>
+    </div>
+
+    <form method="POST" action="{% url 'account_login' %}" class="space-y-6">
+      {% csrf_token %}
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+      
+      {% include "components/input.html" with id="id_login" name="login" type="email" label="Email" placeholder="you@example.com" required=True %}
+      {% include "components/input.html" with id="id_password" name="password" type="password" label="Password" placeholder="••••••••" required=True no_margin=True %}
+
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <input id="id_remember" name="remember" type="checkbox" class="mr-2">
+          <label for="id_remember" class="text-sm text-gray-600">Remember me</label>
+        </div>
+        <div class="text-sm">
+          {% include "components/link.html" with url="account_reset_password" text="Forgot password?" %}
+        </div>
+      </div>
+
+      {% include "components/error_block.html" %}
+
+      {% include "components/button.html" with text="Sign in" icon="fa-solid fa-lock" %}
+    </form>
+  </div>
+</div>
+{% endblock %}
